@@ -1,12 +1,14 @@
-import "./sign-up-form.styles.scss";
-import { useState, useContext } from "react";
+import { useState } from "react";
+
+import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
+
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
-import { UserContext } from "../../contexts/user.context";
-import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
+
+import "./sign-up-form.styles.scss";
 
 const defaultFormFields = {
   displayName: "",
@@ -19,31 +21,31 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-  const { setCurrectUser } = useContext(UserContext);
-
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("passwords dont match");
+      alert("passwords do not match");
       return;
     }
+
     try {
       const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      setCurrectUser(user); // once user signs up we will also store that current user inside our context
+
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        alert("cannot create user, email already in use");
+        alert("Cannot create user, email already in use");
       } else {
-        console.error("user creation encounted an error", error);
+        console.log("user creation encountered an error", error);
       }
     }
   };
@@ -94,7 +96,6 @@ const SignUpForm = () => {
           name='confirmPassword'
           value={confirmPassword}
         />
-
         <Button type='submit'>Sign Up</Button>
       </form>
     </div>
