@@ -5,8 +5,8 @@ import {
   NavLink,
 } from "./navigation.styles";
 
-import { Fragment, useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Fragment, useContext, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
@@ -20,6 +20,14 @@ import { signOutUser } from "../../utils/firebase/firebase.utils";
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
   const { isCartOpen } = useContext(CartContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser]);
 
   return (
     <Fragment>
