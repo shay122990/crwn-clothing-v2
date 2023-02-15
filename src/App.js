@@ -27,7 +27,8 @@ const App = () => {
     });
 
     return unsubscribe;
-  }, []);
+    //The dispatch function will be stable as long as the same store instance is being passed to the <Provider>. Normally that store instance enever changes in an application
+  }, [dispatch]);
 
   return (
     <Routes>
