@@ -2,6 +2,7 @@ import { compose, createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
+import thunk from "redux-thunk";
 import { rootReducer } from "./root-reducer";
 
 const persistConfig = {
@@ -13,9 +14,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 //if we're in development, render the logger
-const middleWares = [process.env.NODE_ENV !== "development" && logger].filter(
-  Boolean
-);
+const middleWares = [
+  process.env.NODE_ENV !== "production" && logger,
+  thunk,
+].filter(Boolean);
+
 //setting up for redux devtools (if we're not in production and theres a window object and the devtools exsist then use this compose otherwise use the redux compose)
 const composeEnhancer =
   (process.env.NODE_ENV !== "production" &&
