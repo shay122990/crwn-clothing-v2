@@ -11,7 +11,7 @@ import { CATEGORIES_ACTION_TYPES } from "./category.types";
 
 export function* fetchCategoriesAsync() {
   try {
-    const categoriesArray = yield call(getCategoriesAndDocuments, "categories");
+    const categoriesArray = yield call(getCategoriesAndDocuments, "categories"); //can remove the second arguement as its fetched in firebase as as second arguement instead of label, if label is added and hard coded 'categories' is removed we can add the categories in this call.
     yield put(fetchCategoriesSuccess(categoriesArray));
   } catch (error) {
     yield put(fetchCategoriesFailed(error));
@@ -25,6 +25,6 @@ export function* onFetchCategories() {
   );
 }
 
-export function* categoriesSaga() {
+export function* categoriesSagas() {
   yield all([call(onFetchCategories)]);
 }
